@@ -24,6 +24,7 @@
     fnm
     uv
 
+    byobu
     dogedns
     xh
 
@@ -56,11 +57,16 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
-    # nvim custom plugins
     ".local/bin/ssh" = {
       source = ./configurations/.local/bin/ssh;
       executable = true;
     };
+
+    ".byobu/.tmux.conf" = {
+      source = ./configurations/.byobu/.tmux.conf;
+    };
+
+    # nvim custom plugins
     ".local/share/nvim" = {
       source = ./configurations/.local/share/nvim;
       recursive = true;
@@ -260,6 +266,10 @@
         set -Ux FNM_COREPACK_ENABLED true
         set -Ux FNM_VERSION_FILE_STRATEGY recursive
       '';
+    };
+
+    tmux = {
+      enable = true;
     };
   };
 }
