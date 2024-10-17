@@ -52,5 +52,7 @@ in {
 
   home.shellAliases = common.shellAliases;
 
+  home.sessionPath = common.sessionPath;
+
   programs = common.programs;
 }

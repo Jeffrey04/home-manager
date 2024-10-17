@@ -52,6 +52,8 @@ in {
 
   home.shellAliases = common.shellAliases;
 
+  home.sessionPath = common.sessionPath;
+
   #programs.firefox = {
   #  enable = true;
   #  package = pkgs.firefox-devedition;

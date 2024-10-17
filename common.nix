@@ -95,6 +95,10 @@
     http = "$HOME/.nix-profile/bin/xh";
   };
 
+  sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
