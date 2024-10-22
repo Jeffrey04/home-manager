@@ -57,8 +57,8 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
 
-    ".local/bin/ssh" = {
-      source = ./configurations/.local/bin/ssh;
+    ".local/bin/ssh-ident" = {
+      source = ./configurations/.local/bin/ssh-ident;
       executable = true;
     };
 
@@ -93,10 +93,11 @@
     cat = "$HOME/.nix-profile/bin/bat";
     dig = "$HOME/.nix-profile/bin/doge";
     http = "$HOME/.nix-profile/bin/xh";
+    ssh = "$HOME/.local/bin/ssh-ident";
   };
 
   sessionPath = [
-    "$HOME/.local/bin"
+    "$HOME/.local/bin:$PATH"
   ];
 
   programs = {
