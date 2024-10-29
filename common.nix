@@ -35,6 +35,7 @@
     sqlite
     ncurses
     xz
+    tcl
     tk
     xml2
     xmlsec
@@ -84,7 +85,7 @@
     # EDITOR = "emacs";
     VISUAL = "nvim";
 
-    PYTHON_CONFIGURE_OPTS = "--enable-loadable-sqlite-extensions";
+    PYTHON_CONFIGURE_OPTS = "--enable-loadable-sqlite-extensions --enable-shared";
     PYTHONBREAKPOINT = "ipdb.set_trace";
   };
 
@@ -246,7 +247,7 @@
       '';
 
 
-      bashrcExtra = ''
+      initExtra = ''
         # rust
         PATH=/home/jeffrey04/.cargo/bin:$PATH
 

@@ -59,5 +59,7 @@ in {
   #  package = pkgs.firefox-devedition;
   #};
 
-  programs = common.programs;
+  programs = lib.attrsets.recursiveUpdate common.programs {
+    bash.bashrcExtra = lib.strings.fileContents /etc/skel/.bashrc;
+  };
 }
