@@ -98,7 +98,7 @@
   };
 
   sessionPath = [
-    "$HOME/.local/bin:$PATH"
+    "$HOME/.local/bin"
   ];
 
   programs = {
