@@ -24,10 +24,15 @@
     fnm
     uv
 
+    # utilities
     byobu
     dogedns
+    graphviz
+    qtscrcpy
+    scrcpy
     xh
 
+    # libraries
     openssl
     zlib-ng
     bzip2
@@ -90,7 +95,6 @@
   };
 
   shellAliases = {
-    cd = "z";
     cat = "$HOME/.nix-profile/bin/bat";
     dig = "$HOME/.nix-profile/bin/doge";
     http = "$HOME/.nix-profile/bin/xh";
@@ -208,6 +212,8 @@
 
       enableBashIntegration = true;
       enableFishIntegration = true;
+
+      options = [ "--cmd cd" ];
     };
 
     bat = {
