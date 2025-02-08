@@ -28,6 +28,8 @@ in {
     qtscrcpy
     gearlever
     ollama
+    input-leap
+    ptyxis
   ];
 
   home.extraOutputsToInstall = common.extraOutputsToInstall;
