@@ -28,7 +28,6 @@
     byobu
     dogedns
     graphviz
-    qtscrcpy
     scrcpy
     xh
 
