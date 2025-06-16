@@ -30,6 +30,7 @@
     graphviz
     scrcpy
     xh
+    lazydocker
 
     # libraries
     openssl
@@ -221,7 +222,8 @@
 
     lsd = {
       enable = true;
-      enableAliases = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
     };
 
     go = {
