@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  common = import ./common.nix {pkgs=pkgs; lib=lib;};
+  mac = import ./mac.nix {config=config; pkgs=pkgs; lib=lib;};
 in {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (pkgs.lib.getName pkg) [
@@ -20,17 +20,22 @@ in {
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = common.stateVersion; # Please read the comment before changing.
+  home.stateVersion = mac.home.stateVersion; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = common.packages;
+  home.packages = with pkgs; mac.home.packages ++ [
+    kubectl
+    gemini-cli
+    openfortivpn
+    pinentry_mac
+  ];
 
-  home.extraOutputsToInstall = common.extraOutputsToInstall;
+  home.extraOutputsToInstall = mac.home.extraOutputsToInstall;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = common.file;
+  home.file = mac.home.file;
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -48,11 +53,11 @@ in {
   #
   #  /etc/profiles/per-user/jeffrey04/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = common.sessionVariables;
+  home.sessionVariables = mac.home.sessionVariables;
 
-  home.shellAliases = common.shellAliases;
+  home.shellAliases = mac.home.shellAliases;
 
-  home.sessionPath = common.sessionPath;
+  home.sessionPath = mac.home.sessionPath;
 
-  programs = common.programs;
+  programs = mac.programs;
 }
