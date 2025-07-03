@@ -35,6 +35,7 @@
 
     # utilities
     byobu
+    clang
     dogedns
     graphviz
     scrcpy
@@ -54,8 +55,10 @@
     xml2
     xmlsec
     libffi
-    libyaml
     libtool
+    libyaml
+    libxml2
+    libxslt
   ];
 
   extraOutputsToInstall = [ "dev" "lib" ];
