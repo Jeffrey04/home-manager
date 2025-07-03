@@ -41,6 +41,7 @@
     scrcpy
     xh
     lazydocker
+    htop
 
     # libraries
     openssl
