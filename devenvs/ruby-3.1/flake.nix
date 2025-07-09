@@ -14,7 +14,6 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
 
       # A helper function to generate an attribute set for each system.
-      # This avoids repeating the shell definition for each system.
       forEachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = nixpkgs.legacyPackages.${system};
         system = system;
@@ -39,12 +38,13 @@
 
           # List of packages to be available in the development environment.
           buildInputs = with pkgs; [
-            # Add fish to the environment so the shellHook can find it.
+            # fish is kept so that fish-specific completions from other
+            # packages can be made available.
             fish
             # Git is needed for fetching gems from git repositories.
             git
             # The Ruby interpreter.
-            ruby_3_1
+            ruby
             # Bundler for managing Ruby gems.
             bundler
             # Common dependencies for building native extensions.
@@ -55,24 +55,39 @@
             pkg-config
             readline
             zlib
-            re2
           ] ++ lib.optionals stdenv.isDarwin [
             # Add macOS-specific dependencies.
             libiconv
+          ] ++ lib.optionals stdenv.isLinux [
+            # procps is needed for the `ps` command on Linux.
+            # gawk is used for robustly parsing the output of ps.
+            procps
+            gawk
           ];
 
-          # This hook runs in bash when the dev shell is activated.
+          # This hook now correctly detects the parent shell (e.g., fish)
+          # and works for both `nix develop` and `direnv`.
           shellHook = ''
             # Ruby-specific setup
             export BUNDLE_PATH="${bundlePath}"
+            # Set a custom variable for Starship to display.
+            # The 'name' variable is set by mkShell.
+            export STARSHIP_NIX_PROMPT="($name)"
+
             echo "Ruby dev environment activated for ${system}!"
             echo "Gems will be installed in: $BUNDLE_PATH"
 
-            # Generic shell-switching logic (copied from the Python flake)
-            if [[ "$-" == *i* && -z "$IN_NIX_SHELL" ]]; then
-              export IN_NIX_SHELL=1
-              echo "Switching to your current shell: $SHELL"
-              exec "$SHELL"
+            # This logic makes `nix develop` drop you into your current shell,
+            # while remaining compatible with `direnv`.
+            # It checks for the absence of a direnv-specific variable.
+            if [ -z "$DIRENV_DIR" ]; then
+              # Find the grandparent process ID (the user's shell) and trim whitespace.
+              grandparent_pid=$(ps -o ppid= -p $PPID | xargs)
+              # Get the full command of the grandparent process and use awk to get the first word.
+              parent_shell_path=$(ps -o command= -p "$grandparent_pid" | awk '{print $1}')
+              echo "Switching to your current shell: $parent_shell_path"
+              # Execute the shell.
+              exec "$parent_shell_path"
             fi
           '';
         };
