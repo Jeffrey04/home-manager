@@ -44,7 +44,7 @@
             # Git is needed for fetching gems from git repositories.
             git
             # The Ruby interpreter.
-            ruby
+            ruby_3_1
             # Bundler for managing Ruby gems.
             bundler
             # Common dependencies for building native extensions.
