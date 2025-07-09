@@ -31,21 +31,18 @@ in {
     kubernetes-helm
     openfortivpn
     pinentry_mac
+
+    (writeShellScriptBin "ib-vpn" ''
+    #!/usr/bin/env bash
+    sudo openfortivpn -c $HOME/Projects/ib-vpn/config
+    '')
   ];
 
   home.extraOutputsToInstall = mac.home.extraOutputsToInstall;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = lib.attrsets.recursiveUpdate mac.home.file {
-    ".local/bin/ib-vpn" = {
-      executable = true;
-      text = ''
-      #!/usr/bin/env bash
-      sudo openfortivpn -c $HOME/Projects/ib-vpn/config
-      '';
-    };
-  };
+  home.file = mac.home.file;
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a

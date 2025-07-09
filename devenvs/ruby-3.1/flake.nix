@@ -23,46 +23,50 @@
     in
     {
       # Generate a `devShell` for each of the `supportedSystems`.
-      devShells = forEachSystem ({ pkgs, system }: {
-        # Revert back to the standard pkgs.mkShell
+      devShells = forEachSystem ({ pkgs, system }:
+      let
+        # Define the bundle path based on the OS.
+        bundlePath =
+          if pkgs.stdenv.isDarwin then
+            "$HOME/Library/Caches/ruby-bundle"
+          else
+            "$HOME/.cache/ruby-bundle";
+      in
+      {
         default = pkgs.mkShell {
           # A name for the shell environment.
-          name = "ruby-3.1";
+          name = "ruby-dev-shell";
 
           # List of packages to be available in the development environment.
           buildInputs = with pkgs; [
             # Add fish to the environment so the shellHook can find it.
             fish
-
-            # The Ruby interpreter. You can specify versions, e.g., ruby_3_1
+            # Git is needed for fetching gems from git repositories.
+            git
+            # The Ruby interpreter.
             ruby
-
             # Bundler for managing Ruby gems.
             bundler
-
             # Common dependencies for building native extensions.
-            # On macOS, nixpkgs provides a version of gcc that works correctly.
             gcc
             gnumake
-
             # Libraries often required by gems.
             openssl
             pkg-config
             readline
             zlib
+            re2
           ] ++ lib.optionals stdenv.isDarwin [
             # Add macOS-specific dependencies.
-            # libiconv is a common requirement for gems on macOS.
             libiconv
           ];
 
           # This hook runs in bash when the dev shell is activated.
           shellHook = ''
             # Set environment variables using bash syntax.
-            export BUNDLE_PATH="./.bundle"
+            export BUNDLE_PATH="${bundlePath}"
             echo "Ruby dev environment activated for ${system}!"
-            echo "Ruby version: $(ruby --version)"
-            echo "Bundler version: $(bundle --version)"
+            echo "Gems will be installed in: $BUNDLE_PATH"
 
             # This logic checks if we're already in fish, and if not,
             # it replaces the current bash process with fish.
@@ -76,4 +80,3 @@
       });
     };
 }
-

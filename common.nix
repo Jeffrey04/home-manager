@@ -42,24 +42,6 @@
     xh
     lazydocker
     htop
-
-    # libraries
-    openssl
-    zlib-ng
-    bzip2
-    readline
-    sqlite
-    ncurses
-    xz
-    tcl
-    tk
-    xml2
-    xmlsec
-    libffi
-    libtool
-    libyaml
-    libxml2
-    libxslt
   ];
 
   extraOutputsToInstall = [ "dev" "lib" ];
@@ -103,7 +85,6 @@
     # EDITOR = "emacs";
     VISUAL = "nvim";
 
-    PYTHON_CONFIGURE_OPTS = "--enable-loadable-sqlite-extensions --enable-shared";
     PYTHONBREAKPOINT = "ipdb.set_trace";
   };
 
@@ -155,6 +136,8 @@
     direnv = {
       enable = true;
       enableBashIntegration = true;
+      # not needed for Fish
+      #enableFishIntegration = true;
     };
 
     starship = {
@@ -197,29 +180,6 @@
       };
     };
 
-    pyenv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-    };
-
-    rbenv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-      plugins = [
-        {
-          name = "ruby-build";
-          src = pkgs.fetchFromGitHub {
-            owner = "rbenv";
-            repo = "ruby-build";
-            rev = "v20241007";
-            hash = "sha256-R66O4EeVZqznKA9p0uFCfVpeUUf4tKjjncGnIKJwoBs=";
-          };
-        }
-      ];
-    };
-
     zoxide = {
       enable = true;
 
@@ -260,12 +220,6 @@
 
     bash = {
       enable = true;
-
-      profileExtra = ''
-        # Ubuntu make installation of Ubuntu Make binary symlink
-        PATH=/home/jeffrey04/.local/share/umake/bin:$PATH
-      '';
-
 
       initExtra = ''
         # rust
