@@ -25,8 +25,10 @@ in {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; mac.home.packages ++ [
-    kubectl
     gemini-cli
+    kind
+    kubectl
+    kubernetes-helm
     openfortivpn
     pinentry_mac
   ];
