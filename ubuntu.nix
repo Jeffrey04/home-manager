@@ -71,10 +71,10 @@ in {
 
   programs = lib.attrsets.recursiveUpdate common.programs {
     bash.bashrcExtra = lib.strings.fileContents /etc/skel/.bashrc;
+    bash.profileExtra = ''
+      # Ubuntu make installation of Ubuntu Make binary symlink
+      PATH=/home/jeffrey04/.local/share/umake/bin:$PATH
+    '';
   };
 
-  programs.bash.profileExtra = ''
-    # Ubuntu make installation of Ubuntu Make binary symlink
-    PATH=/home/jeffrey04/.local/share/umake/bin:$PATH
-  '';
 }
