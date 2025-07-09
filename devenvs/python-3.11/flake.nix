@@ -33,10 +33,9 @@
           name = "python-3.11";
 
           # List of packages to be available in the development environment.
-          # This provides just the Python interpreter and build tools.
-          # Poetry/uv will handle the rest.
           buildInputs = with pkgs; [
-            # Add fish to the environment so the shellHook can find it.
+            # fish is kept so that fish-specific completions from other
+            # packages can be made available.
             fish
             # Git is often needed for installing packages from git repositories.
             git
@@ -66,8 +65,8 @@
 
             # This logic makes `nix develop` drop you into your current shell,
             # while remaining compatible with `direnv`.
-            # It checks for the absence of a direnv-specific variable.
-            if [ -z "$DIRENV_DIR" ]; then
+            # It checks for a variable that direnv sets when running .envrc.
+            if [ -z "$DIRENV_IN_ENVRC" ]; then
               # Find the grandparent process ID (the user's shell) and trim whitespace.
               grandparent_pid=$(ps -o ppid= -p $PPID | xargs)
               # Get the full command of the grandparent process and use awk to get the first word.
