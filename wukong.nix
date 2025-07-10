@@ -66,5 +66,11 @@ in {
 
   home.sessionPath = mac.home.sessionPath;
 
-  programs = mac.programs;
+  programs = lib.attrsets.recursiveUpdate mac.programs {
+    bash.profileExtra = ''
+      if [ -f "${config.home.homeDirectory}/.config/user-secrets.sh" ]; then
+        source "${config.home.homeDirectory}/.config/user-secrets.sh"
+      fi
+    '';
+  };
 }
