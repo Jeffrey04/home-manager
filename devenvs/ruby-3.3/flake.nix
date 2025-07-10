@@ -34,7 +34,7 @@
       {
         default = pkgs.mkShell {
           # A name for the shell environment.
-          name = "ruby-3.1";
+          name = "ruby-3.3";
 
           # List of packages to be available in the development environment.
           buildInputs = with pkgs; [
@@ -44,7 +44,7 @@
             # Git is needed for fetching gems from git repositories.
             git
             # The Ruby interpreter.
-            ruby_3_1
+            ruby
             # Bundler for managing Ruby gems.
             bundler
             # Common dependencies for building native extensions.
