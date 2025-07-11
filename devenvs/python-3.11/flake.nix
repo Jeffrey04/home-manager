@@ -55,13 +55,11 @@
           # This hook now correctly detects the parent shell (e.g., fish)
           # and works for both `nix develop` and `direnv`.
           shellHook = ''
-            # Set a custom variable for Starship to display.
-            # The 'name' variable is set by mkShell.
-            export STARSHIP_NIX_PROMPT="($name)"
-
             echo "Python dev environment activated for ${system}!"
             echo "Python version: $(${python}/bin/python --version)"
             echo "Using global poetry/uv for package management."
+
+            test -f .env && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' .env)"
 
             # This logic makes `nix develop` drop you into your current shell,
             # while remaining compatible with `direnv`.

@@ -48,11 +48,15 @@
             # Bundler for managing Ruby gems.
             bundler
             # Common dependencies for building native extensions.
+            cmake
             gcc
             gnumake
             # Libraries often required by gems.
             openssl
             pkg-config
+            libmysqlclient
+            shared-mime-info
+            re2
             readline
             zlib
           ] ++ lib.optionals stdenv.isDarwin [
@@ -70,12 +74,12 @@
           shellHook = ''
             # Ruby-specific setup
             export BUNDLE_PATH="${bundlePath}"
-            # Set a custom variable for Starship to display.
-            # The 'name' variable is set by mkShell.
-            export STARSHIP_NIX_PROMPT="($name)"
+            export FREEDESKTOP_MIME_TYPES_PATH="${pkgs.shared-mime-info}/share/mime/packages/freedesktop.org.xml"
 
             echo "Ruby dev environment activated for ${system}!"
             echo "Gems will be installed in: $BUNDLE_PATH"
+
+            test -f .env && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' .env)"
 
             # This logic makes `nix develop` drop you into your current shell,
             # while remaining compatible with `direnv`.
