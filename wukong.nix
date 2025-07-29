@@ -25,9 +25,15 @@ in {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; mac.home.packages ++ [
+    colima
+    docker
+    docker-buildx
+    docker-compose
+    docker-credential-helpers
     gemini-cli
     kind
     kubectl
+    kubectx
     kubernetes-helm
     openfortivpn
     pinentry_mac
@@ -62,15 +68,14 @@ in {
   #
   home.sessionVariables = mac.home.sessionVariables;
 
-  home.shellAliases = mac.home.shellAliases;
+  home.shellAliases = mac.home.shellAliases //  {
+  };
 
   home.sessionPath = mac.home.sessionPath;
 
   programs = lib.attrsets.recursiveUpdate mac.programs {
     bash.profileExtra = ''
-      if [ -f "${config.home.homeDirectory}/.config/user-secrets.sh" ]; then
-        source "${config.home.homeDirectory}/.config/user-secrets.sh"
-      fi
+      test -f "${config.home.homeDirectory}/.config/user-secrets" && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' ${config.home.homeDirectory}/.config/user-secrets)"
     '';
   };
 }

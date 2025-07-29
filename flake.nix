@@ -22,7 +22,7 @@
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
       };
-      packages.x86_64-darwin.homeConfigurations."jeffrey04@wukong.local" = home-manager.lib.homeManagerConfiguration {
+      packages.x86_64-darwin.homeConfigurations."jeffrey04@wukong" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-darwin;
 
         # Specify your home configuration modules here, for example,

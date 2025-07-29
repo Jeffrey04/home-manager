@@ -45,11 +45,6 @@
             gcc
             gnumake
             pkg-config
-          ] ++ lib.optionals stdenv.isLinux [
-            # procps is needed for the `ps` command on Linux.
-            # gawk is used for robustly parsing the output of ps.
-            procps
-            gawk
           ];
 
           # This hook now correctly detects the parent shell (e.g., fish)
@@ -60,19 +55,6 @@
             echo "Using global poetry/uv for package management."
 
             test -f .env && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' .env)"
-
-            # This logic makes `nix develop` drop you into your current shell,
-            # while remaining compatible with `direnv`.
-            # It checks for a variable that direnv sets when running .envrc.
-            if [ -z "$DIRENV_IN_ENVRC" ]; then
-              # Find the grandparent process ID (the user's shell) and trim whitespace.
-              grandparent_pid=$(ps -o ppid= -p $PPID | xargs)
-              # Get the full command of the grandparent process and use awk to get the first word.
-              parent_shell_path=$(ps -o command= -p "$grandparent_pid" | awk '{print $1}')
-              echo "Switching to your current shell: $parent_shell_path"
-              # Execute the shell.
-              exec "$parent_shell_path"
-            fi
           '';
         };
       });
