@@ -30,17 +30,22 @@ in {
     docker-buildx
     docker-compose
     docker-credential-helpers
-    gemini-cli
     kind
     kubectl
     kubectx
     kubernetes-helm
     openfortivpn
+    oras
     pinentry_mac
 
     (writeShellScriptBin "ib-vpn" ''
     #!/usr/bin/env bash
     sudo openfortivpn -c $HOME/Projects/ib-vpn/config
+    '')
+    (writeShellScriptBin "gemini" ''
+    #!/usr/bin/env bash
+    fnm install --lts
+    fnm exec --using=$(fnm ls-remote --lts | tail -n1 | awk -F ' ' '{ print $1 }') npx https://github.com/google-gemini/gemini-cli
     '')
   ];
 
