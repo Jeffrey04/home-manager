@@ -37,15 +37,21 @@ in {
     openfortivpn
     oras
     pinentry_mac
+    watchman
 
+    (writeShellScriptBin "colima-start" ''
+    #!/usr/bin/env bash
+    eval `ssh-agent -s`
+    ssh-add $HOME/.ssh/identities/work/id_ib
+    colima start --cpu 4 --memory 8 --disk 30 --vm-type=vz --mount-type=virtiofs --ssh-agent
+    '')
     (writeShellScriptBin "ib-vpn" ''
     #!/usr/bin/env bash
     sudo openfortivpn -c $HOME/Projects/ib-vpn/config
     '')
     (writeShellScriptBin "gemini" ''
     #!/usr/bin/env bash
-    fnm install --lts
-    fnm exec --using=$(fnm ls-remote --lts | tail -n1 | awk -F ' ' '{ print $1 }') npx https://github.com/google-gemini/gemini-cli
+    fnm install lts-latest; fnm exec --using=lts-latest npx -y https://github.com/google-gemini/gemini-cli "$@"
     '')
   ];
 
@@ -71,9 +77,12 @@ in {
   #
   #  /etc/profiles/per-user/jeffrey04/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = mac.home.sessionVariables;
+  home.sessionVariables = mac.home.sessionVariables // {
+    COMPOSE_PARALLEL_LIMIT = 0;
+  };
 
   home.shellAliases = mac.home.shellAliases //  {
+    k = "$HOME/.nix-profile/bin/kubectl";
   };
 
   home.sessionPath = mac.home.sessionPath;
@@ -82,5 +91,31 @@ in {
     bash.profileExtra = ''
       test -f "${config.home.homeDirectory}/.config/user-secrets" && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' ${config.home.homeDirectory}/.config/user-secrets)"
     '';
+
+    zed-editor = {
+      enable = true;
+      extensions = [
+        "ruby"
+      ];
+
+      userSettings = {
+        languages = {
+          Ruby = {
+            language_servers = [
+              "solargraph"
+              "!ruby-lsp"
+            ];
+          };
+        };
+
+        lsp = {
+          solargraph = {
+            settings = {
+              use_bundler = false;
+            };
+          };
+        };
+      };
+    };
   };
 }

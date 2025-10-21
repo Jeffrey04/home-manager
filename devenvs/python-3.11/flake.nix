@@ -50,10 +50,6 @@
           # This hook now correctly detects the parent shell (e.g., fish)
           # and works for both `nix develop` and `direnv`.
           shellHook = ''
-            echo "Python dev environment activated for ${system}!"
-            echo "Python version: $(${python}/bin/python --version)"
-            echo "Using global poetry/uv for package management."
-
             test -f .env && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' .env)"
           '';
         };
