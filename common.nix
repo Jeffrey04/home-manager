@@ -31,7 +31,6 @@
     #vscode-fhs
     rustup
     fnm
-    uv
 
     # utilities
     byobu
@@ -82,7 +81,6 @@
   };
 
   sessionVariables = {
-    # EDITOR = "emacs";
     VISUAL = "nvim";
 
     PYTHONBREAKPOINT = "ipdb.set_trace";
@@ -140,10 +138,16 @@
       #enableFishIntegration = true;
     };
 
+
+    fzf = {
+      enable = true;
+    };
+
     starship = {
       enable = true;
       enableBashIntegration = false;
       enableFishIntegration = true;
+      enableTransience = true;
       settings = {
         add_newline = false;
 
@@ -171,11 +175,18 @@
           show_always = true;
         };
 
-        custom.direnv = {
-          ignore_timeout = true;
-          format = "[\\[direnv\\]]($style) ";
-          style = "fg:yellow dimmed";
-          when = "env | grep -E '^DIRENV_DIFF='";
+        nix_shell = {
+          impure_msg = "";
+        };
+
+        direnv = {
+          disabled = false;
+          allowed_msg = "🆗";
+          not_allowed_msg = "🆖";
+          denied_msg = "⛔️";
+          loaded_msg = "▶️";
+          unloaded_msg = "⏹️";
+          style = "bold yellow";
         };
       };
     };
@@ -201,7 +212,9 @@
 
     go = {
       enable = true;
-      goPath = ".go";
+      env = {
+        GOPATH = ["$HOME/.go"];
+      };
     };
 
     poetry = {
@@ -209,6 +222,14 @@
       settings = {
         virtualenvs.prefer-active-python = true;
       };
+    };
+
+    ripgrep = {
+      enable = true;
+    };
+
+    uv = {
+      enable = true;
     };
 
     nix-index = {

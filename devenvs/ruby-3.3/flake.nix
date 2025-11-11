@@ -63,8 +63,8 @@
           shellHook = ''
             # Ruby-specific setup
             export FREEDESKTOP_MIME_TYPES_PATH="${pkgs.shared-mime-info}/share/mime/packages/freedesktop.org.xml"
-
-            echo "Ruby dev environment activated for ${system}!"
+            export PATH=$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH
+            export SSL_CERT_DIR=/etc/ssl/certs
 
             test -f .env && eval "$(sed -e '/^#/d' -e '/^$/d' -e 's/^/export /' .env)"
           '';
