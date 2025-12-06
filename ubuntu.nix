@@ -29,7 +29,7 @@ in {
     gearlever
     ollama
     #input-leap
-    #deskflow
+    deskflow
     ptyxis
     pandoc
   ];
