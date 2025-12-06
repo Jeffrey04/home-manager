@@ -44,6 +44,7 @@ in {
     eval `ssh-agent -s`
     ssh-add $HOME/.ssh/identities/work/id_ib
     colima start --cpu 4 --memory 8 --disk 30 --vm-type=vz --mount-type=virtiofs --ssh-agent
+    colima ssh -- env | grep SSH_AUTH_SOCK
     '')
     (writeShellScriptBin "ib-vpn" ''
     #!/usr/bin/env bash
