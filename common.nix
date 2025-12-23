@@ -8,7 +8,7 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  stateVersion = "25.05"; # Please read the comment before changing.
+  stateVersion = "25.11"; # Please read the comment before changing.
 
   packages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -109,9 +109,9 @@
 
       plugins = with pkgs.vimPlugins; [
         base16-nvim
-        deoplete-nvim
-        deoplete-go
-        deoplete-jedi
+        #deoplete-nvim
+        #deoplete-go
+        #deoplete-jedi
         rainbow_parentheses-vim
         vim-airline
         vim-airline-themes

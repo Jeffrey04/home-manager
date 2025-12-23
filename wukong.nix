@@ -37,9 +37,10 @@ in {
     openfortivpn
     oras
     pinentry_mac
+    trivy
     watchman
 
-    (writeShellScriptBin "colima-start" ''
+    (writeShellScriptBin "colima-create" ''
     #!/usr/bin/env bash
     eval `ssh-agent -s`
     ssh-add $HOME/.ssh/identities/work/id_ib
