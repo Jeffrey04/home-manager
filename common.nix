@@ -36,6 +36,7 @@
     byobu
     clang
     dogedns
+    fastfetch
     graphviz
     scrcpy
     xh
