@@ -38,6 +38,7 @@
     dogedns
     fastfetch
     graphviz
+    ripgrep
     scrcpy
     xh
     lazydocker

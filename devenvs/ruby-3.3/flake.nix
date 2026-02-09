@@ -37,6 +37,7 @@
             git
             # The Ruby interpreter.
             ruby
+            ruby-lsp
             # Bundler for managing Ruby gems.
             bundler
             # Common dependencies for building native extensions.
