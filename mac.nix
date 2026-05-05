@@ -24,7 +24,9 @@ in {
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = common.packages;
+  home.packages = with pkgs; common.packages ++ [
+    unixtools.watch
+  ];
 
   home.extraOutputsToInstall = common.extraOutputsToInstall;
 

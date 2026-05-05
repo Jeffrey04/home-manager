@@ -20,7 +20,7 @@ in {
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = mac.home.stateVersion; # Please read the comment before changing.
+  home.stateVersion = "25.11"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -34,11 +34,13 @@ in {
     kubectl
     kubectx
     kubernetes-helm
+    openconnect
     openfortivpn
     oras
     pinentry_mac
     trivy
-    watchman
+    vpn-slice
+    #watchman
 
     (writeShellScriptBin "colima-create" ''
     #!/usr/bin/env bash
@@ -47,9 +49,27 @@ in {
     colima start --cpu 4 --memory 8 --disk 30 --vm-type=vz --mount-type=virtiofs --ssh-agent
     colima ssh -- env | grep SSH_AUTH_SOCK
     '')
+    #(writeShellScriptBin "ib-vpn" ''
+    ##!/usr/bin/env bash
+    #sudo openfortivpn -c $HOME/Projects/ib-vpn/config
+    #'')
     (writeShellScriptBin "ib-vpn" ''
     #!/usr/bin/env bash
-    sudo openfortivpn -c $HOME/Projects/ib-vpn/config
+
+    # Default to 'global' if no argument is provided
+    REGION=''${1:-global}
+    GATEWAY="vpn-''${REGION}.internetbrands.com"
+
+    # Fetch password using the specific GnuPG service and your account string
+    PASS=$(security find-generic-password \
+      -a "RSDIRECT%5Cclai__vpn-global.internetbrands.com_password" \
+      -s "GnuPG" -w)
+
+    echo "Connecting to $GATEWAY..."
+
+    # The first \n is for the password.
+    # The second \n hits "Enter" on the 2FA prompt.
+    printf "%s\n\n" "$PASS" | sudo openconnect "$GATEWAY" --passwd-on-stdin --config="$HOME/Projects/ib-vpn/openconnect"
     '')
     (writeShellScriptBin "gemini" ''
     #!/usr/bin/env bash
